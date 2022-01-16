@@ -3,7 +3,10 @@
   <div class="app">
     <post-form
     @create="createPost"/>
-    <PostList v-bind:posts="posts"/>
+    <PostList
+        v-bind:posts="posts"
+        @remove="removePost"
+    />
 
 
   </div>
@@ -55,6 +58,9 @@ export default {
 
     createPost(post){
 this.posts.push(post)
+    },
+    removePost(post){
+      this.posts=this.posts.filter(elem=>elem.id!==post.id)
     }
 
 

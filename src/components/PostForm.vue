@@ -1,49 +1,71 @@
 <template>
-<div>
-  <form @submit.prevent>
-    <h4></h4>
-<!--    <input @input="post.title=$event.target.value"-->
-<!--           v-bind:value="post.title" class="input"-->
-<!--           type="text" placeholder="title">-->
+  <div>
+    <form @submit.prevent>
+      <h4>POST</h4>
+      <!--    <input @input="post.title=$event.target.value"-->
+      <!--           v-bind:value="post.title" class="input"-->
+      <!--           type="text" placeholder="title">-->
 
-    <input type="text" class="input"
-    placeholder="title"
-    v-model="post.title">
-<!--    <input @input="post.body=$event.target.value"-->
-<!--           v-bind:value="post.body"-->
-<!--           class="input" type="text"-->
-<!--           placeholder="description">-->
-    <input type="text" class="input"
-    placeholder="description"
-    v-model="post.body">
+      <!--    <input type="text" class="input"-->
+      <!--    placeholder="title"-->
+      <!--    v-model="post.title">-->
 
-    <my-button @click='createPost'>Create post</my-button>
-  </form>
+      <MyInput
+          placeholder="title"
+          v-model="post.title"
+      />
 
-</div>
+<!--      <MyInput-->
+<!--          placeholder="title"-->
+<!--          v-model:value="post.title"-->
+<!--      />-->
+
+      <!--    <input @input="post.body=$event.target.value"-->
+      <!--           v-bind:value="post.body"-->
+      <!--           class="input" type="text"-->
+      <!--           placeholder="description">-->
+
+      <!--    <input type="text" class="input"-->
+      <!--    placeholder="description"-->
+      <!--    v-model="post.body">-->
+
+      <MyInput
+          v-model="post.body"
+          placeholder="description"/>
+
+<!--      <MyInput-->
+<!--          v-model:value="post.body"-->
+<!--          placeholder="description"/>-->
+
+      <my-button @click='createPost'>Create post</my-button>
+    </form>
+
+  </div>
 </template>
 
 <script>
 // import MyButton from "./UI/MyButton";
+// import MyInput from "./UI/MyInput";
 export default {
   name: "PostForm",
+  // components: {MyInput},
   // components: {MyButton},
   //model
-  data(){
-   return{
-     post:{
-       body:'',
-       title:''
-     }
-   }
+  data() {
+    return {
+      post: {
+        body: '',
+        title: ''
+      }
+    }
   },
-  methods:{
-    createPost(){
-      this.post.id=Date.now();
+  methods: {
+    createPost() {
+      this.post.id = Date.now();
       //create event
-      this.$emit('create',this.post)
+      this.$emit('create', this.post)
       //clear input
-      this.post={
+      this.post = {
         title: '',
         body: ''
       }
@@ -54,14 +76,5 @@ export default {
 
 <style scoped>
 
-
-.input {
-  width: 300px;
-  border: 2px solid gray;
-  margin: 20px;
-  padding: 10px;
-  font-size: 20px;
-
-}
 
 </style>
