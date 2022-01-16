@@ -1,26 +1,23 @@
 <template>
   Hello work
   <div class="app">
-    <form @submit.prevent>
-      <h4></h4>
-      <input @input="title=$event.target.value"
-             v-bind:value="title" class="input"
-             type="text" placeholder="title">
-      <input @input="body=$event.target.value"
-             v-bind:value="body"
-             class="input" type="text"
-             placeholder="description">
-      <button v-on:click="createPost" class="button">Create post</button>
-    </form>
-    <div class="post" v-for="post in posts" :key="post.id">
-      <div><strong>Title:</strong>{{ post.title }}</div>
-      <div><strong>Description:</strong>{{ post.body }}</div>
-    </div>
+    <post-form
+    @create="createPost"/>
+    <PostList v-bind:posts="posts"/>
+
+
   </div>
 </template>
 <script>
+import PostForm from "./components/PostForm";
+import PostList from "./components/PostList";
+
 export default {
   name: 'App',
+
+  components: {
+    PostList, PostForm
+  },
   //models
   data() {
     return {
@@ -31,8 +28,7 @@ export default {
         {id: 2, title: 'JS2', body: 'description 2'},
         {id: 3, title: 'JS3', body: 'description 3'},
       ],
-      title: '',
-      body: ''
+
     }
   },
   methods: {
@@ -42,20 +38,24 @@ export default {
     addDisLike() {
       this.disLikes += 1;
     },
-    createPost() {
-      // e.stopPropagation();
-      // e.preventDefault();
-      const newPost = {
-        id: Date.now(),
-        title: this.title,
-        body: this.body
+    /*createPost() {*/
+    /*  // e.stopPropagation();*/
+    /*  // e.preventDefault();*/
+    /*  const newPost = {*/
+    /*    id: Date.now(),*/
+    /*    title: this.title,*/
+    //     body: this.body
+    //
+    //   }
+    //   this.posts.push(newPost)
+    //   this.title = '';
+    //   this.body = ''
+    //
+    // },
 
-      }
-      this.posts.push(newPost)
-      this.title='';
-      this.body=''
-
-    },
+    createPost(post){
+this.posts.push(post)
+    }
 
 
   }
@@ -72,29 +72,9 @@ export default {
 
 }
 
-.post {
-  margin: 20px;
-  padding: 17px;
-  border: 2px solid green;
-}
-
-.input {
-  width: 300px;
-  border: 2px solid gray;
-  margin: 20px;
-  padding: 10px;
-  font-size: 20px;
-
-}
 
 .app {
   margin: 20px;
 }
 
-.button {
-  margin: 20px;
-  padding: 10px;
-  font-size: 20px;
-  cursor: pointer;
-}
 </style>
