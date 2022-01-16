@@ -17,15 +17,17 @@
     placeholder="description"
     v-model="post.body">
 
-    <button @click='createPost'  class="button">Create post</button>
+    <my-button @click='createPost'>Create post</my-button>
   </form>
 
 </div>
 </template>
 
 <script>
+// import MyButton from "./UI/MyButton";
 export default {
   name: "PostForm",
+  // components: {MyButton},
   //model
   data(){
    return{
@@ -51,12 +53,7 @@ export default {
 </script>
 
 <style scoped>
-.button {
-  margin: 20px;
-  padding: 10px;
-  font-size: 20px;
-  cursor: pointer;
-}
+
 
 .input {
   width: 300px;
