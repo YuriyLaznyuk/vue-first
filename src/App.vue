@@ -1,46 +1,34 @@
 <template>
   Hello work
-  <div>
-    <div class="post">
-      <div>
-        <strong>Title:</strong> Post about JS
-      </div>
-      <div>
-        <strong>Description:</strong> JS universal language
-      </div>
-    </div>
-    <div class="post">
-      <div>
-        <strong>Title:</strong> Post about JS
-      </div>
-      <div>
-        <strong>Description:</strong> JS universal language
-      </div>
-    </div>
-    <div class="post">
-      <div>
-        <strong>Title:</strong> Post about JS
-      </div>
-      <div>
-        <strong>Description:</strong> JS universal language
-      </div>
-    </div>
+  <div class="app">
+    <post-form
+    @create="createPost"/>
+    <PostList v-bind:posts="posts"/>
 
 
   </div>
 </template>
 <script>
+import PostForm from "./components/PostForm";
+import PostList from "./components/PostList";
+
 export default {
   name: 'App',
+
+  components: {
+    PostList, PostForm
+  },
+  //models
   data() {
     return {
       likes: 0,
       disLikes: 5,
-      posts:[
-        {id:1,title:'JS1',body:'description 1'},
-        {id:2,title:'JS2',body:'description 2'},
-        {id:3,title:'JS3',body:'description 3'},
-      ]
+      posts: [
+        {id: 1, title: 'JS1', body: 'description 1'},
+        {id: 2, title: 'JS2', body: 'description 2'},
+        {id: 3, title: 'JS3', body: 'description 3'},
+      ],
+
     }
   },
   methods: {
@@ -49,7 +37,27 @@ export default {
     },
     addDisLike() {
       this.disLikes += 1;
+    },
+    /*createPost() {*/
+    /*  // e.stopPropagation();*/
+    /*  // e.preventDefault();*/
+    /*  const newPost = {*/
+    /*    id: Date.now(),*/
+    /*    title: this.title,*/
+    //     body: this.body
+    //
+    //   }
+    //   this.posts.push(newPost)
+    //   this.title = '';
+    //   this.body = ''
+    //
+    // },
+
+    createPost(post){
+this.posts.push(post)
     }
+
+
   }
 
 
@@ -64,10 +72,9 @@ export default {
 
 }
 
-.post {
+
+.app {
   margin: 20px;
-  padding: 17px;
-  border: 2px solid green;
 }
 
 </style>
