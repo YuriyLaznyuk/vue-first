@@ -1,25 +1,30 @@
 <template>
-  Hello work
   <div class="app">
-    <post-form
-    @create="createPost"/>
-    <PostList
-        v-bind:posts="posts"
-        @remove="removePost"
-    />
-
-
+    <h1>Page posts</h1>
+    <!--    <input type="text" v-model.number="modificatorValue">-->
+    <MyButton @click="fetchPosts">Get Posts</MyButton>
+    <MyButton @click="showDialog">Create post</MyButton>
+    <MyDialog v-model:show.number="dialogVisible">
+      <post-form @create="createPost" />
+    </MyDialog>
+    <PostList v-bind:posts="posts" @remove="removePost" />
   </div>
 </template>
 <script>
 import PostForm from "./components/PostForm";
 import PostList from "./components/PostList";
+import MyDialog from "./components/UI/MyDialog";
+import MyButton from "./components/UI/MyButton";
+import axios from "axios";
 
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
-    PostList, PostForm
+    MyButton,
+    MyDialog,
+    PostList,
+    PostForm,
   },
   //models
   data() {
@@ -27,12 +32,11 @@ export default {
       likes: 0,
       disLikes: 5,
       posts: [
-        {id: 1, title: 'JS1', body: 'description 1'},
-        {id: 2, title: 'JS2', body: 'description 2'},
-        {id: 3, title: 'JS3', body: 'description 3'},
-      ],
 
-    }
+      ],
+      dialogVisible: false,
+      modificatorValue: "",
+    };
   },
   methods: {
     addLike() {
@@ -56,18 +60,30 @@ export default {
     //
     // },
 
-    createPost(post){
-this.posts.push(post)
+    createPost(post) {
+      this.posts.push(post);
+      this.dialogVisible = false;
     },
-    removePost(post){
-      this.posts=this.posts.filter(elem=>elem.id!==post.id)
-    }
+    removePost(post) {
+      this.posts = this.posts.filter((elem) => elem.id !== post.id);
+    },
+    showDialog() {
+      this.dialogVisible = true;
+    },
 
+    async fetchPosts() {
+      try {
+        const resp = await axios.get(
+          "https://jsonplaceholder.typicode.com/posts?_limit=10"
+        );
+        this.posts=await resp.data
 
-  }
-
-
-}
+      } catch (e) {
+        console.log(e.message);
+      }
+    },
+  },
+};
 </script>
 
 <style>
@@ -75,12 +91,9 @@ this.posts.push(post)
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-
 }
-
 
 .app {
   margin: 20px;
 }
-
 </style>

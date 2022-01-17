@@ -1,15 +1,12 @@
 <template>
-  <div class="post" >
+  <div class="post">
     <div>
       <div><strong>Title:</strong>{{ post.title }}</div>
       <div><strong>Description:</strong>{{ post.body }}</div>
     </div>
     <div class="post__btns">
-      <MyButton
-          @click="$emit('remove',post)"
-      >Delete</MyButton>
+      <MyButton @click="$emit('remove', post)">Delete</MyButton>
     </div>
-
   </div>
 </template>
 
@@ -18,16 +15,14 @@
 export default {
   name: "PostItem",
   // components: {MyButton},
-  props:{
-    post:{
-      type:Object,
-      required:true
-    }
+  props: {
+    post: {
+      type: Object,
+      required: true,
+    },
   },
-  methods:{
-
-  }
-}
+  methods: {},
+};
 </script>
 
 <style scoped>
@@ -38,7 +33,5 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
 }
-
 </style>
