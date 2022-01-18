@@ -2,12 +2,14 @@
   <div class="app">
     <h1>Page posts</h1>
     <!--    <input type="text" v-model.number="modificatorValue">-->
-    <MyButton @click="fetchPosts">Get Posts</MyButton>
+    <!--    <MyButton @click="fetchPosts">Get Posts</MyButton>-->
     <MyButton @click="showDialog">Create post</MyButton>
     <MyDialog v-model:show.number="dialogVisible">
       <post-form @create="createPost" />
     </MyDialog>
-    <PostList v-bind:posts="posts" @remove="removePost" />
+    <PostList v-bind:posts="posts" @remove="removePost" v-if="!isPostLoading" />
+    <div v-else>...Loading</div>
+<!--    <div>...Loading</div>-->
   </div>
 </template>
 <script>
@@ -31,11 +33,10 @@ export default {
     return {
       likes: 0,
       disLikes: 5,
-      posts: [
-
-      ],
+      posts: [],
       dialogVisible: false,
       modificatorValue: "",
+      isPostLoading: false,
     };
   },
   methods: {
@@ -73,15 +74,26 @@ export default {
 
     async fetchPosts() {
       try {
-        const resp = await axios.get(
-          "https://jsonplaceholder.typicode.com/posts?_limit=10"
-        );
-        this.posts=await resp.data
+
+          this.isPostLoading = true;
+          const resp = await axios.get(
+            "https://jsonplaceholder.typicode.com/posts?_limit=10"
+          );
+          this.posts = await resp.data;
+          // this.isPostLoading = false;
 
       } catch (e) {
         console.log(e.message);
       }
+      finally {
+        this.isPostLoading = false;
+
+      }
     },
+  },
+  //huk
+  mounted() {
+    this.fetchPosts();
   },
 };
 </script>
