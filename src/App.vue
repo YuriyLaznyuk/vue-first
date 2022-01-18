@@ -1,38 +1,53 @@
 <template>
-  Hello work
   <div class="app">
-    <post-form
-    @create="createPost"/>
-    <PostList
-        v-bind:posts="posts"
-        @remove="removePost"
-    />
-
-
+    <h1>Page posts</h1>
+    <!--    <input type="text" v-model.number="modificatorValue">-->
+    <!--    <MyButton @click="fetchPosts">Get Posts</MyButton>-->
+    <div class="app__btns">
+      <MyButton @click="showDialog">Create post</MyButton>
+      <MySelect v-model="selectedSort" :options="sortOptions"/>
+    </div>
+    <MyDialog v-model:show.number="dialogVisible">
+      <post-form @create="createPost" />
+    </MyDialog>
+    <PostList v-bind:posts="posts" @remove="removePost" v-if="!isPostLoading" />
+    <div v-else>...Loading</div>
+    <!--    <div>...Loading</div>-->
   </div>
 </template>
 <script>
 import PostForm from "./components/PostForm";
 import PostList from "./components/PostList";
+import MyDialog from "./components/UI/MyDialog";
+import MyButton from "./components/UI/MyButton";
+import axios from "axios";
+import MySelect from "./components/UI/MySelect";
 
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
-    PostList, PostForm
+    MySelect,
+    MyButton,
+    MyDialog,
+    PostList,
+    PostForm,
   },
   //models
   data() {
     return {
       likes: 0,
       disLikes: 5,
-      posts: [
-        {id: 1, title: 'JS1', body: 'description 1'},
-        {id: 2, title: 'JS2', body: 'description 2'},
-        {id: 3, title: 'JS3', body: 'description 3'},
-      ],
-
-    }
+      posts: [],
+      dialogVisible: false,
+      modificatorValue: "",
+      isPostLoading: false,
+      selectedSort:'',
+      sortOptions:[
+        {value:'title', name:'sort title'},
+        {value:'body', name:'sort body'},
+      ]
+    };
   },
   methods: {
     addLike() {
@@ -56,18 +71,37 @@ export default {
     //
     // },
 
-    createPost(post){
-this.posts.push(post)
+    createPost(post) {
+      this.posts.push(post);
+      this.dialogVisible = false;
     },
-    removePost(post){
-      this.posts=this.posts.filter(elem=>elem.id!==post.id)
-    }
+    removePost(post) {
+      this.posts = this.posts.filter((elem) => elem.id !== post.id);
+    },
+    showDialog() {
+      this.dialogVisible = true;
+    },
 
-
-  }
-
-
-}
+    async fetchPosts() {
+      try {
+        this.isPostLoading = true;
+        const resp = await axios.get(
+          "https://jsonplaceholder.typicode.com/posts?_limit=10"
+        );
+        this.posts = await resp.data;
+        // this.isPostLoading = false;
+      } catch (e) {
+        console.log(e.message);
+      } finally {
+        this.isPostLoading = false;
+      }
+    },
+  },
+  //huk
+  mounted() {
+    this.fetchPosts();
+  },
+};
 </script>
 
 <style>
@@ -75,12 +109,13 @@ this.posts.push(post)
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-
 }
-
 
 .app {
   margin: 20px;
 }
-
+.app__btns{
+  display: flex;
+  justify-content: space-between;
+}
 </style>
