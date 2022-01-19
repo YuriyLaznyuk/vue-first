@@ -22,6 +22,19 @@
 
     <!--    <div v-else>...Loading</div>-->
     <div v-show="isPostLoading">...Loading</div>
+    <div class="pages__wrapper">
+      <div
+        class="pages__wrapper-page"
+        v-bind:key="page"
+        v-for="page in totalPages"
+        :class="{
+          'current-page': page === this.page,
+        }"
+        @click="changePage(page)"
+      >
+        {{ page }}
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -47,6 +60,9 @@ export default {
   //models
   data() {
     return {
+      page: 1,
+      limit: 10,
+      totalPages: 0,
       searchQuery: "",
       likes: 0,
       disLikes: 5,
@@ -93,13 +109,25 @@ export default {
     showDialog() {
       this.dialogVisible = true;
     },
+    changePage(page) {
+      this.page = page;
+      // this.fetchPosts();
+    },
 
     async fetchPosts() {
       try {
         this.isPostLoading = true;
         const resp = await axios.get(
-          "https://jsonplaceholder.typicode.com/posts?_limit=10"
+          `https://jsonplaceholder.typicode.com/posts?_page=${this.page}_limit=${this.limit}`
+          // `https://jsonplaceholder.typicode.com/posts?`,
+          // {
+          //   params: {
+          //     _page: this.page,
+          //     _limit: this.limit,
+          //   },
+          // }
         );
+        this.totalPages = Math.ceil(resp.headers["x-total-count"] / this.limit);
         this.posts = await resp.data;
         // this.isPostLoading = false;
       } catch (e) {
@@ -122,6 +150,14 @@ export default {
   //     });
   //   },
   // },
+
+  //watch
+  watch: {
+    page() {
+      this.fetchPosts();
+    },
+  },
+
   //computed
   computed: {
     sortedPosts() {
@@ -151,5 +187,22 @@ export default {
 .app__btns {
   display: flex;
   justify-content: space-between;
+}
+.pages__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pages__wrapper-page {
+  padding: 5px;
+  border: 1px solid;
+  margin: 5px;
+  cursor: pointer;
+}
+.pages__wrapper-page:hover {
+  background: antiquewhite;
+}
+.current-page {
+  border: 3px solid;
 }
 </style>
