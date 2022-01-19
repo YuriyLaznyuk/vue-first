@@ -5,9 +5,9 @@
     <!--    <MyButton @click="fetchPosts">Get Posts</MyButton>-->
     <div class="app__btns">
       <MyButton @click="showDialog">Create post</MyButton>
-      <MySelect v-model="selectedSort" :options="sortOptions"/>
+      <MySelect v-model="selectedSort" :options="sortOptions" />
     </div>
-    <MyDialog v-model:show.number="dialogVisible">
+    <MyDialog v-model:show-m="dialogVisible">
       <post-form @create="createPost" />
     </MyDialog>
     <PostList v-bind:posts="posts" @remove="removePost" v-if="!isPostLoading" />
@@ -42,11 +42,11 @@ export default {
       dialogVisible: false,
       modificatorValue: "",
       isPostLoading: false,
-      selectedSort:'',
-      sortOptions:[
-        {value:'title', name:'sort title'},
-        {value:'body', name:'sort body'},
-      ]
+      selectedSort: "",
+      sortOptions: [
+        { value: "title", name: "sort title" },
+        { value: "body", name: "sort body" },
+      ],
     };
   },
   methods: {
@@ -101,6 +101,15 @@ export default {
   mounted() {
     this.fetchPosts();
   },
+  //watch
+  watch: {
+    selectedSort(newValue) {
+      this.posts.sort((post1, post2) => {
+        // return post1[this.selectedSort].localeCompare(post2[this.selectedSort]);
+        return post1[newValue].localeCompare(post2[newValue]);
+      });
+    },
+  },
 };
 </script>
 
@@ -114,7 +123,7 @@ export default {
 .app {
   margin: 20px;
 }
-.app__btns{
+.app__btns {
   display: flex;
   justify-content: space-between;
 }

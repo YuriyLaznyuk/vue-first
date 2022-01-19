@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <form @submit.prevent>
-      <h4>POST</h4>
+  <div class="form">
+    <form class="form__elem" @submit.prevent>
+      <h4 class="form__elem-title">POST</h4>
       <!--    <input @input="post.title=$event.target.value"-->
       <!--           v-bind:value="post.title" class="input"-->
       <!--           type="text" placeholder="title">-->
@@ -10,15 +10,12 @@
       <!--    placeholder="title"-->
       <!--    v-model="post.title">-->
 
-      <MyInput
-          placeholder="title"
-          v-model="post.title"
-      />
+      <MyInput placeholder="title" v-model="post.title" />
 
-<!--      <MyInput-->
-<!--          placeholder="title"-->
-<!--          v-model:value="post.title"-->
-<!--      />-->
+      <!--      <MyInput-->
+      <!--          placeholder="title"-->
+      <!--          v-model:value="post.title"-->
+      <!--      />-->
 
       <!--    <input @input="post.body=$event.target.value"-->
       <!--           v-bind:value="post.body"-->
@@ -29,17 +26,14 @@
       <!--    placeholder="description"-->
       <!--    v-model="post.body">-->
 
-      <MyInput
-          v-model="post.body"
-          placeholder="description"/>
+      <MyInput v-model="post.body" placeholder="description" />
 
-<!--      <MyInput-->
-<!--          v-model:value="post.body"-->
-<!--          placeholder="description"/>-->
+      <!--      <MyInput-->
+      <!--          v-model:value="post.body"-->
+      <!--          placeholder="description"/>-->
 
-      <my-button @click='createPost'>Create post</my-button>
+      <my-button @click="createPost">Create post</my-button>
     </form>
-
   </div>
 </template>
 
@@ -54,27 +48,41 @@ export default {
   data() {
     return {
       post: {
-        body: '',
-        title: ''
-      }
-    }
+        body: "",
+        title: "",
+      },
+    };
   },
   methods: {
     createPost() {
       this.post.id = Date.now();
       //create event
-      this.$emit('create', this.post)
+      this.$emit("create", this.post);
       //clear input
       this.post = {
-        title: '',
-        body: ''
-      }
-    }
-  }
-}
+        title: "",
+        body: "",
+      };
+    },
+  },
+  // watch: {
+  //   post: {
+  //     handler(post) {
+  //       console.log("post", post);
+  //     },
+  //     deep: true,
+  //   },
+  // },
+};
 </script>
 
 <style scoped>
-
-
+.form {
+}
+.form__elem {
+}
+.form__elem-title {
+  padding: 10px;
+  text-align: center;
+}
 </style>

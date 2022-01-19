@@ -1,5 +1,5 @@
 <template>
-  <div class="dialog" v-if="show === true" @click.stop="hideDialog">
+  <div class="dialog" v-if="showM === true" @click.stop="hideDialog">
     <div @click.stop class="dialog__container">
       <slot></slot>
     </div>
@@ -10,14 +10,14 @@
 export default {
   name: "MyDialog",
   props: {
-    show: {
+    showM: {
       type: Boolean,
       default: false,
     },
   },
   methods:{
     hideDialog(){
-      this.$emit('update:show',false)
+      this.$emit('update:showM',false)
     }
   }
 
