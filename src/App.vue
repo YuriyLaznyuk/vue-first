@@ -22,19 +22,22 @@
 
     <!--    <div v-else>...Loading</div>-->
     <div v-show="isPostLoading">...Loading</div>
-    <div class="pages__wrapper">
-      <div
-        class="pages__wrapper-page"
-        v-bind:key="page"
-        v-for="page in totalPages"
-        :class="{
-          'current-page': page === this.page,
-        }"
-        @click="changePage(page)"
-      >
-        {{ page }}
-      </div>
-    </div>
+    <!--    <div class="pages__wrapper">-->
+    <!--      <div-->
+    <!--        class="pages__wrapper-page"-->
+    <!--        v-bind:key="page"-->
+    <!--        v-for="page in totalPages"-->
+    <!--        :class="{-->
+    <!--          'current-page': page === this.page,-->
+    <!--        }"-->
+    <!--        @click="changePage(page)"-->
+    <!--      >-->
+    <!--        {{ page }}-->
+    <!--      </div>-->
+    <!--    </div>-->
+
+    <!--    //** bottom page **//-->
+    <div ref="observer" class="observer"></div>
   </div>
 </template>
 <script>
@@ -109,14 +112,14 @@ export default {
     showDialog() {
       this.dialogVisible = true;
     },
-    changePage(page) {
-      this.page = page;
-      // this.fetchPosts();
-    },
+    // changePage(page) {
+    //   this.page = page;
+    //   // this.fetchPosts();
+    // },
 
     async fetchPosts() {
       try {
-        this.isPostLoading = true;
+        // this.isPostLoading = true;
         const resp = await axios.get(
           `https://jsonplaceholder.typicode.com/posts?_page=${this.page}_limit=${this.limit}`
           // `https://jsonplaceholder.typicode.com/posts?`,
@@ -136,10 +139,50 @@ export default {
         this.isPostLoading = false;
       }
     },
+
+    async loadAllPosts() {
+      try {
+        this.page += 1;
+        // this.isPostLoading = true;
+        const resp = await axios.get(
+          `https://jsonplaceholder.typicode.com/posts?_page=${this.page}_limit=${this.limit}`
+          // `https://jsonplaceholder.typicode.com/posts?`,
+          // {
+          //   params: {
+          //     _page: this.page,
+          //     _limit: this.limit,
+          //   },
+          // }
+        );
+        this.totalPages = Math.ceil(resp.headers["x-total-count"] / this.limit);
+        this.posts = [...this.posts, ...resp.data];
+        // this.isPostLoading = false;
+      } catch (e) {
+        console.log(e.message);
+      } finally {
+        this.isPostLoading = false;
+      }
+    },
   },
+
   //huk
   mounted() {
     this.fetchPosts();
+    // console.log("ref ", this.$refs.observer);
+    // this.loadAllPosts();
+    const options = {
+      rootMargin: "0px",
+      threshold: 1.0,
+    };
+    const callback = (entries, observer) => {
+      console.log("entries", entries, "observer", observer);
+      if (entries[0].isIntersecting && this.page < this.totalPages) {
+        console.log("YES");
+        this.loadAllPosts();
+      }
+    };
+    const observer = new IntersectionObserver(callback, options);
+    observer.observe(this.$refs.observer);
   },
   //watch
   // watch: {
@@ -153,9 +196,9 @@ export default {
 
   //watch
   watch: {
-    page() {
-      this.fetchPosts();
-    },
+    // page() {
+    //   this.fetchPosts();
+    // },
   },
 
   //computed
@@ -204,5 +247,9 @@ export default {
 }
 .current-page {
   border: 3px solid;
+}
+.observer {
+  height: 30px;
+  background: antiquewhite;
 }
 </style>
