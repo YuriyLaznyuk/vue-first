@@ -10,7 +10,8 @@
       <!--    placeholder="title"-->
       <!--    v-model="post.title">-->
 
-      <MyInput placeholder="title" v-model="post.title" />
+      <!--      <MyInput v-focus placeholder="title" v-model="post.title" />-->
+      <my-input placeholder="title" v-model="post.title" />
 
       <!--      <MyInput-->
       <!--          placeholder="title"-->
@@ -26,7 +27,8 @@
       <!--    placeholder="description"-->
       <!--    v-model="post.body">-->
 
-      <MyInput v-model="post.body" placeholder="description" />
+      <!--      <MyInput v-model="post.body" placeholder="description" />-->
+      <my-input v-model="post.body" placeholder="description" />
 
       <!--      <MyInput-->
       <!--          v-model:value="post.body"-->
@@ -40,8 +42,10 @@
 <script>
 // import MyButton from "./UI/MyButton";
 // import MyInput from "./UI/MyInput";
+import MyInput from "./UI/MyInput";
 export default {
   name: "PostForm",
+  components: { MyInput },
   // components: {MyInput},
   // components: {MyButton},
   //model
