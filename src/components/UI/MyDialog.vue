@@ -7,20 +7,23 @@
 </template>
 
 <script>
+import toggleMixin from "../../mixins/toggleMixin";
+
 export default {
   name: "MyDialog",
-  props: {
-    showM: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  methods:{
-    hideDialog(){
-      this.$emit('update:showM',false)
-    }
-  }
+  mixins: [toggleMixin],
 
+  // props: {
+  //   showM: {
+  //     type: Boolean,
+  //     default: false,
+  //   },
+  // },
+  // methods:{
+  //   hideDialog(){
+  //     this.$emit('update:showM',false)
+  //   }
+  // }
 };
 </script>
 
@@ -36,7 +39,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.dialog__container{
+.dialog__container {
   margin: auto;
   background: white;
   border-radius: 12px;

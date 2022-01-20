@@ -3,7 +3,13 @@
     <h1>Page posts</h1>
     <!--    <input type="text" v-model.number="modificatorValue" />-->
     <!--    <MyButton @click="fetchPosts">Get Posts</MyButton>-->
-    <MyInput title="Search" v-model="searchQuery" placeholder="...search" />
+    <input
+      class="post__search"
+      v-focus
+      title="Search"
+      v-model="searchQuery"
+      placeholder="...search"
+    />
     <div class="post__btns">
       <MyButton @click="showDialog">Create post</MyButton>
       <MySelect v-model="selectedSort" :options="sortOptions" />
@@ -36,8 +42,9 @@
     <!--      </div>-->
     <!--    </div>-->
 
-    <!--    //** bottom page **//-->
-    <div ref="observer" class="observer"></div>
+    <!--    //** bottom page observer**//-->
+    <!--    <div ref="observer" class="observer"></div>-->
+    <div v-intersection="loadAllPosts" class="observer"></div>
   </div>
 </template>
 <script>
@@ -47,13 +54,13 @@ import MyDialog from "../components/UI/MyDialog";
 import MyButton from "../components/UI/MyButton";
 import axios from "axios";
 import MySelect from "../components/UI/MySelect";
-import MyInput from "../components/UI/MyInput";
+// import MyInput from "../components/UI/MyInput";
 
 export default {
   name: "PostPage",
 
   components: {
-    MyInput,
+    // MyInput,
     MySelect,
     MyButton,
     MyDialog,
@@ -170,19 +177,20 @@ export default {
     this.fetchPosts();
     // console.log("ref ", this.$refs.observer);
     // this.loadAllPosts();
-    const options = {
-      rootMargin: "0px",
-      threshold: 1.0,
-    };
-    const callback = (entries, observer) => {
-      console.log("entries", entries, "observer", observer);
-      if (entries[0].isIntersecting && this.page < this.totalPages) {
-        console.log("YES");
-        this.loadAllPosts();
-      }
-    };
-    const observer = new IntersectionObserver(callback, options);
-    observer.observe(this.$refs.observer);
+
+    // const options = {
+    //   rootMargin: "0px",
+    //   threshold: 1.0,
+    // };
+    // const callback = (entries, observer) => {
+    //   console.log("entries", entries, "observer", observer);
+    //   if (entries[0].isIntersecting && this.page < this.totalPages) {
+    //     console.log("YES");
+    //     this.loadAllPosts();
+    //   }
+    // };
+    // const observer = new IntersectionObserver(callback, options);
+    // observer.observe(this.$refs.observer);
   },
   //watch
   // watch: {
@@ -238,5 +246,10 @@ export default {
 .observer {
   height: 30px;
   background: antiquewhite;
+}
+.post__search {
+  margin: 10px 0 0 0;
+  font-size: 20px;
+  padding: 2px;
 }
 </style>
