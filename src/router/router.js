@@ -4,6 +4,7 @@ import PostPage from "../pages/PostPage";
 import About from "../pages/About";
 import PostIdPage from "../pages/PostIdPage";
 import PostPageWithStore from "../pages/PostPageWithStore";
+import PostPageComposition from "../pages/PostPageComposition";
 
 export const routes = [
   {
@@ -25,6 +26,10 @@ export const routes = [
   {
     path: "/store",
     component: PostPageWithStore,
+  },
+  {
+    path: "/composition",
+    component: PostPageComposition,
   },
 ];
 const router = createRouter({
