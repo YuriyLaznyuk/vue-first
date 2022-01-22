@@ -5,6 +5,14 @@ export default createStore({
   modules: {
     posts: postModule,
   },
+  state: {
+    isAuth: false,
+  },
+  mutations: {
+    changeAuth(state) {
+      state.isAuth = !state.isAuth;
+    },
+  },
 });
 
 // export default createStore({

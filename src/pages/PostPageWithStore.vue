@@ -1,10 +1,11 @@
 <template>
   <div class="post">
-    <!--    <h1>{{ $store.state.isAuth ? "user auth" : "user no auth" }}</h1>-->
+    <h1>{{ $store.state.isAuth ? "user auth" : "user no auth" }}</h1>
+    <MyButton @click="$store.commit('changeAuth')">change store</MyButton>
     <!--    <h1>{{ $store.state.likes }}</h1>-->
     <!--    <h1>{{ $store.getters.doubleLikes }}</h1>-->
 
-    <!--    <MyButton @click="$store.commit('incrementLikes')">increment</MyButton>-->
+    <!--        <MyButton @click="$store.commit('incrementLikes')">increment</MyButton>-->
     <!--    <MyButton @click="$store.commit('decrementLikes')">decrement</MyButton>-->
     <!--    <input type="text" v-model.number="modificatorValue" />-->
     <!--    <MyButton @click="fetchPosts">Get Posts</MyButton>-->
